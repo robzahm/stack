@@ -43,6 +43,9 @@ public class StackService {
 
     public Integer get(int index) {
         // Throw exception if index is OOB
+        if (index > currentNode.getIndex()) {
+            throw new IndexOutOfBoundsException();
+        }
 
         Node iteratorNode = currentNode;
         while (index < iteratorNode.getIndex()) {

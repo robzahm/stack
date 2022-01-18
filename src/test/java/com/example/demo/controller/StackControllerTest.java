@@ -29,7 +29,8 @@ public class StackControllerTest {
         mvc.perform(MockMvcRequestBuilders.post("/stack/push")
                 .content("1")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isAccepted());
+                .andExpect(status().isOk());
 
     }
+    // Mock the service to confirm that an empty stack exception returns a 400
 }

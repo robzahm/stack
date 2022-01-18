@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.EmptyStackException;
+
 @RestController
 @AllArgsConstructor
 @Slf4j
@@ -15,12 +17,14 @@ public class StackController {
     @Autowired
     private StackService stackService;
 
-    // Error handling
+    // Error handling & response codes
 
     // Identify specific stack in controller?
 
+    // Sample body
 
-    // Add a body
+
+    // Add a JSON body
     @RequestMapping(value = "/stack/push", method = RequestMethod.POST)
     public ResponseEntity push(@RequestBody Integer val) {
         log.info("Pushing value to stack: " + val);
@@ -29,7 +33,7 @@ public class StackController {
         stackService.push(val);
 
         // Return
-        return ResponseEntity.accepted().build();
+        return ResponseEntity.ok().build(); // Use created instead?
     }
 
     // Handle errors for empty stack
@@ -37,8 +41,15 @@ public class StackController {
     public ResponseEntity<Integer> pop() {
         log.info("Popping value from stack");
 
+        Integer val = null;
+
         // Do operation
-        Integer val = stackService.pop();
+        try {
+            val = stackService.pop();
+        }
+        catch (EmptyStackException e) {
+            return ResponseEntity.badRequest().build();
+        }
 
         log.info("Popped value from stack: " + val);
 
@@ -52,6 +63,12 @@ public class StackController {
         log.info("Getting value from stack");
 
         // Do operation
+//        try {
+//            Integer val = stackService.get(index);
+//        }
+//        catch (IndexOutOfBoundsException e) {
+//            return ResponseEntity.notFound();
+//        }
         Integer val = stackService.get(index);
 
         log.info("Got value from stack: " + val);
